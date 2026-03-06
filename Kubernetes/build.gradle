@@ -2,10 +2,11 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.3'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.google.cloud.tools.jib' version '3.4.0'
 }
 
 group = 'com.kubernetes'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 description = 'Demo project for Kubernetes'
 
 java {
@@ -17,6 +18,23 @@ java {
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
+	}
+}
+
+jib {
+
+	from {
+		image = "docker://k8s-demo/openjdk17:1.0"
+	}
+
+	to {
+		image = "k8s-demo/enterprise-kubernetes-demo:1.0"
+	}
+
+	container {
+		mainClass = "com.kubernetes.KubernetesApplication"
+
+		ports = ["8080"]
 	}
 }
 
