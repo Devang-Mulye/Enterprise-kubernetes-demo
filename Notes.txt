@@ -1,0 +1,15 @@
+This file will contain random notes and other things which might be useful later on -
+
+=== Jib open-source link ===
+https://github.com/GoogleContainerTools/jib
+
+= Config cache
+
+=== Docker Commands ===
+docker build -t k8s-demo/openjdk17:1.0 .
+docker run k8s-demo/openjdk17:1.0
+
+=== kubernetes
+jibDockerBuild - incompatible with config cache???
+
+=== suggestion - use jib
