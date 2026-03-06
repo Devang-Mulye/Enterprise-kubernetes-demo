@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm-charts.fullname" . }}
+  labels:
+    app: {{ include "helm-charts.name" . }}
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ include "helm-charts.name" . }}
+
+  template:
+    metadata:
+      labels:
+        app: {{ include "helm-charts.name" . }}
+
+    spec:
+      containers:
+        - name: helm-charts
+
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          ports:
+            - containerPort: {{ .Values.container.port }}
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

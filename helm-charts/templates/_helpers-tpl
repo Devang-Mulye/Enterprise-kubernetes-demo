@@ -1,0 +1,7 @@
+{{- define "helm-charts.name" -}}
+helm-charts
+{{- end }}
+
+{{- define "helm-charts.fullname" -}}
+{{ .Release.Name }}-helm-charts
+{{- end }}
