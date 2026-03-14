@@ -53,3 +53,64 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// ======== Custom Tasks - DAM ===========
+
+tasks.register("buildImage") {
+	group = "kubernetes"
+	description = "Build container image using Jib"
+	dependsOn("jibBuildTar")
+}
+
+tasks.register("loadImage", Exec) {
+
+	group = "kubernetes"
+	description = "Load container image into Rancher Desktop containerd"
+
+	dependsOn("buildImage")
+
+	commandLine "nerdctl",
+			"-n", "k8s.io",
+			"load",
+			"-i", "build/jib-image.tar"
+}
+
+tasks.register("deployHelm", Exec) {
+
+	group = "kubernetes"
+	description = "Deploy Helm chart"
+
+	dependsOn("loadImage")
+
+	commandLine "helm",
+			"upgrade",
+			"--install",
+			"enterprise-kubernetes-demo",
+			"../helm-charts",
+			"-n", "k8s-demo",
+			"--create-namespace"
+}
+
+tasks.register("restartDeployment", Exec) {
+
+	group = "kubernetes"
+	description = "Restart Kubernetes deployment"
+
+	dependsOn("deployHelm")
+
+	commandLine "kubectl",
+			"rollout",
+			"restart",
+			"deployment",
+			"enterprise-kubernetes-demo-helm-charts",
+			"-n",
+			"k8s-demo"
+}
+
+tasks.register("deploy") {
+
+	group = "kubernetes"
+	description = "Full Kubernetes deployment pipeline"
+
+	dependsOn("restartDeployment")
+}
