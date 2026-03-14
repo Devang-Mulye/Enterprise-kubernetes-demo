@@ -1,0 +1,23 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+
+build:
+  artifacts:
+    - image: k8s-demo/enterprise-kubernetes-demo
+      context: Kubernetes
+      jib: {}
+  local:
+    push: false
+
+deploy:
+  helm:
+    releases:
+      - name: enterprise-kubernetes-demo
+        chartPath: helm-charts
+        namespace: k8s-demo
+        createNamespace: true
+        useHelmSecrets: false
+        skipBuildDependencies: true
+    flags:
+      upgrade:
+        - --install
