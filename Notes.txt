@@ -13,3 +13,14 @@ docker run k8s-demo/openjdk17:1.0
 jibDockerBuild - incompatible with config cache???
 
 === suggestion - use jib
+
+=== Helm ===
+Use helm template more
+
+helm install enterprise-kubernetes-demo ./helm-charts -n k8s-demo
+helm uninstall enterprise-kubernetes-demo -n k8s-demo
+
+nerdctl -n k8s.io images
+docker save k8s-demo/enterprise-kubernetes-demo:1.0 -o image.tar
+nerdctl -n k8s.io load -i image.tar
+nerdctl -n k8s.io images
