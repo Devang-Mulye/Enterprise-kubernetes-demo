@@ -14,6 +14,7 @@ jibDockerBuild - incompatible with config cache???
 Because it has some systems which do not work with gradle 9+
 
 === suggestion - use jib ===
+./gradlew jibBuildTar
 
 === Helm ===
 Use helm template more
